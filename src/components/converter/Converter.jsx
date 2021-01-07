@@ -6,7 +6,8 @@ function Converter(props) {
         colorHex: '',
         colorRgb: '', 
     });
-
+    
+    const [error, setError] = useState(false);
 
     function hexToRgb(hex) {
         var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -18,22 +19,25 @@ function Converter(props) {
       }
 
     const onValueChange = (e) => {
+        setError(false);
         setColorValue(colorValue => ({...colorValue, colorHex: e.target.value}));
-        const rgb = hexToRgb(e.target.value)
-        setColorValue(colorValue => ({...colorValue, colorRgb: rgb}));
-        props.onChangeColor(colorValue.colorHex);
+        
+        if (e.target.value.length === 7) {
+            if (e.target.value[0] === '#' && e.target.value.match(/[^A-Za-z0-9]/)) {
+                const rgb = hexToRgb(e.target.value)
+                setColorValue(colorValue => ({...colorValue, colorRgb: rgb}));
+                props.onChangeColor(colorValue.colorHex);
+            } else {
+                setError(true);
+            }
+        }
     }
-
-
     return (
         <>
         <input id="name" name="name" value={colorValue.colorHex} onChange={onValueChange} />
-        {colorValue.colorRgb && <div>RGB ({colorValue.colorRgb.r}, {colorValue.colorRgb.g}, {colorValue.colorRgb.b} )</div>}
+        {error && 'Ошибка'}
+        {colorValue.colorRgb && !error && <div>RGB ({colorValue.colorRgb.r}, {colorValue.colorRgb.g}, {colorValue.colorRgb.b} )</div>}
         </>
-
-
     );
 }
-
-
 export default Converter;
