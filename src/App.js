@@ -5,16 +5,14 @@ import './App.css';
 
 function App() {
 
-  const [background, setBackground] = useState({
-    backgroundHex: '', 
-  });
+  const [background, setBackground] = useState('#ffffff');
 
-  const onChangeColorValue = (e) => {
-    setBackground(background => ({...background, backgroundHex: '#' + e}));
+  const onChangeColorValue = (color) => {
+    setBackground(color);
   }
 
   return (
-    <div className="App" style={{'backgroundColor': background.backgroundRgb}}>
+    <div className="App" style={{'backgroundColor': background}}>
       <Converter onChangeColor={onChangeColorValue}/>
     </div>
   );

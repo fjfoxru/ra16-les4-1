@@ -26,10 +26,16 @@ function Converter(props) {
             if (e.target.value[0] === '#' && e.target.value.match(/[^A-Za-z0-9]/)) {
                 const rgb = hexToRgb(e.target.value)
                 setColorValue(colorValue => ({...colorValue, colorRgb: rgb}));
-                props.onChangeColor(colorValue.colorHex);
+                props.onChangeColor(e.target.value);
             } else {
                 setError(true);
+                props.onChangeColor('#ffffff');
             }
+        } else if (e.target.value.length > 7) {
+            setError(true);
+            props.onChangeColor('#ffffff');
+        } else {
+            props.onChangeColor('#ffffff');
         }
     }
     return (
